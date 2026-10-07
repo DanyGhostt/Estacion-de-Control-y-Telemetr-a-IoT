@@ -1,0 +1,8 @@
+# Carpeta de Imágenes para la Documentación / Documentation Images Folder
+#
+# Coloca aquí tus capturas y fotos para que aparezcan en el README.md:
+# - docs/images/proyecto_completo.jpg       (Foto del circuito / maqueta completa)
+# - docs/images/web_app_dashboard.png       (Captura de la app web en navegador móvil/PC)
+# - docs/images/lvgl_splash_screen.png      (Captura de la pantalla 1: Splash Triceratops)
+# - docs/images/lvgl_dashboard.png          (Captura de la pantalla 2: Dashboard HMI Principal)
+# - docs/images/lvgl_qr_screen.png          (Captura de la pantalla 3: Pantalla QR de Conectividad)

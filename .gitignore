@@ -1,0 +1,30 @@
+# PlatformIO
+.pio/
+.pioenvs/
+.piolibdeps/
+
+# STM32CubeIDE Build outputs
+STM_TO_ESP32_UART/Debug/
+STM_TO_ESP32_UART/Release/
+Debug/
+Release/
+*.elf
+*.bin
+*.hex
+*.map
+*.list
+*.o
+*.d
+*.su
+
+# IDE Configurations & temporary files
+.vscode/
+.idea/
+*.launch
+.browse.c_cpp.db*
+*.ipch
+
+# Operating System
+.DS_Store
+Thumbs.db
+desktop.ini
