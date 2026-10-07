@@ -29,7 +29,7 @@
 
 ### 🔬 1. Ensamble Físico Completo / Full Physical Setup
 <p align="center">
-  <img src="docs/images/proyecto_completo.jpg" width="480" alt="Ensamble General del Proyecto" />
+  <img src="docs/images/proyecto_completo.jpg" width="680" alt="Ensamble General del Proyecto" />
   <br>
   <em>Banco de pruebas integrado: STM32 Nucleo-F446RE, ESP32-S3 DevKit, Display TFT ILI9341, Driver TB6612FNG, Motorreductor DC, Servomotor SG90 y Sensores.</em>
 </p>
@@ -45,16 +45,12 @@
 
 ---
 
-### 🖥️ 3. Interfaces Gráficas LVGL (Display TFT ILI9341 320x240) / LVGL Touch Screens
-
-<div align="center">
-
-| 🦖 1. Splash Screen (Portada con Triceratops) | 🎛️ 2. Dashboard HMI Táctil Principal |
-| :---: | :---: |
-| <img src="docs/images/lvgl_splash_screen.png" width="320" alt="Splash Screen Triceratops" /> | <img src="docs/images/lvgl_dashboard.png" width="320" alt="Dashboard HMI Principal" /> |
-| *Animación de entrada con revelado dinámico* | *Control táctil interactivo y monitoreo de telemetría* |
-
-</div>
+### 🖥️ 3. Dashboard HMI Táctil Principal / Main HMI Touch Dashboard
+<p align="center">
+  <img src="docs/images/lvgl_dashboard.png" width="380" alt="Dashboard HMI Principal" />
+  <br>
+  <em>Interfaz táctil interactiva LVGL 8.3 ejecutada a 60 FPS sobre display TFT ILI9341 con digitalizador XPT2046.</em>
+</p>
 
 ---
 
@@ -63,6 +59,10 @@
 ## 📌 1. Descripción General y Arquitectura
 
 Sistema distribuido de control de actuadores y telemetría en tiempo real compuesto por un nodo de control determinista (**STM32F446RE**) y un nodo de visualización / pasarela web (**ESP32-S3**).
+
+<p align="center">
+  <img src="docs/images/arquitectura_sistema.png" width="700" alt="Diagrama de Arquitectura del Sistema IoT" />
+</p>
 
 ```
                   +-------------------------------------------------------------+
@@ -248,26 +248,24 @@ La comunicación entre el ESP32-S3 y la STM32F446RE se realiza a **115200 baudio
 
 ## 🦖 6. Pantallas LVGL Designer y Experiencia Gráfica
 
-### Pantalla 1: Splash Screen (Animación Triceratops)
-- **Compuesto del Dinosaurio**: Se almacena en la Flash del ESP32-S3 como una matriz binaria (`triceratops_gif_data[]`), decodificada por `lv_gif`.
-- **Efecto de Revelado Progresivo**: Durante 2 segundos, una máscara rectangular (`splash_title_mask`) se redimensiona en sincronía exacta con la posición $X$ del dinosaurio mientras avanza, revelando el texto **"TOUCH GATEWAY ESP32 S3"**.
-- **Iconografía de Silicio**: El fondo incorpora figuras vectoriales procedimentales de circuitos integrados (`create_splash_memory_icon`) que representan pines, encapsulado y celdas de silicio.
+### Pantalla 1: Splash Screen (Portada con Animación Triceratops)
 
-```
-+-------------------------------------------------------+
-|  [Chip Decorativo]                                    |
-|                                                       |
-|            TOUCH GATEWAY ESP32 S3                     |
-|           [==== Máscara Dinámica ====>]               |
-|            🦖 (Triceratops caminando)                 |
-|                                                       |
-|                                     [Chip Decorativo] |
-+-------------------------------------------------------+
-```
+<p align="center">
+  <img src="docs/images/lvgl_splash_screen.png" width="380" alt="Pantalla 1: Splash Screen Triceratops" />
+</p>
+
+- **Compuesto del Dinosaurio**: Se almacena en la Flash del ESP32-S3 como una matriz binaria (`triceratops_gif_data[]`), decodificada en tiempo de ejecución por `lv_gif`.
+- **Efecto de Revelado Progresivo**: Durante 2 segundos, una máscara rectangular (`splash_title_mask`) se redimensiona en sincronía exacta con la posición $X$ del dinosaurio mientras avanza de izquierda a derecha, revelando progresivamente el título **"TOUCH GATEWAY ESP32 S3"**.
+- **Iconografía de Silicio**: El fondo incorpora figuras vectoriales procedimentales de circuitos integrados (`create_splash_memory_icon`) que representan pines, encapsulado y celdas de silicio.
 
 ---
 
 ### Pantalla 2: Dashboard HMI Táctil Principal
+
+<p align="center">
+  <img src="docs/images/lvgl_dashboard.png" width="380" alt="Pantalla 2: Dashboard HMI Principal" />
+</p>
+
 - **LED de Conectividad STM32**: Indicador luminoso verde con resplandor que confirma la recepción activa de tramas desde la STM32.
 - **Botón "QR"**: Transición animada (`LV_SCR_LOAD_ANIM_MOVE_LEFT`) hacia la pantalla de emparejamiento Wi-Fi.
 - **Arc de Servomotor**: Control circular táctil para seleccionar ángulos de $0^\circ$ a $180^\circ$.
@@ -282,20 +280,9 @@ La comunicación entre el ESP32-S3 y la STM32F446RE se realiza a **115200 baudio
 
 ### Pantalla 3: Pantalla QR y Acceso por Red Local (LAN)
 
-```
-+-------------------------------------------------------+
-|                 Scan for Remote app!                  |
-|                                                       |
-|                     +-------+                         |
-|                     | QR 📲 |                         |
-|                     +-------+                         |
-|                                                       |
-|               WiFi: WiFi Connected (Verde)            |
-|            URL: http://192.168.1.85                   |
-|                                                       |
-|                      [ Volver ]                       |
-+-------------------------------------------------------+
-```
+<p align="center">
+  <img src="docs/images/lvgl_qr_screen.png" width="380" alt="Pantalla 3: Pantalla QR de Conectividad" />
+</p>
 
 - **Generación Dinámica del Código QR**: Generado en tiempo real con `lv_qrcode` codificando la URL obtenida por DHCP (`http://<IP_LOCAL_ESP32>`).
 - **Restricción de Red Local (LAN)**:
@@ -358,6 +345,10 @@ La comunicación entre el ESP32-S3 y la STM32F446RE se realiza a **115200 baudio
 ## 📌 1. System Overview & Architecture
 
 Distributed real-time actuator control and telemetry platform consisting of a deterministic execution node (**STM32F446RE**) and an HMI touch / IoT web gateway node (**ESP32-S3**).
+
+<p align="center">
+  <img src="docs/images/arquitectura_sistema.png" width="700" alt="System Architecture Diagram" />
+</p>
 
 ```
                   +-------------------------------------------------------------+
@@ -476,17 +467,36 @@ $$\text{Checksum} = (\text{CommandCode} + \text{PayloadLength} + \text{ActionDat
 ## 🦖 4. LVGL HMI Screens & Visual Design
 
 ### 1. Animated Splash Screen (Triceratops)
+
+<p align="center">
+  <img src="docs/images/lvgl_splash_screen.png" width="380" alt="Screen 1: Animated Splash Screen Triceratops" />
+</p>
+
 - **Sprite Architecture**: Triceratops GIF frames are stored in Flash memory as a raw C byte array (`triceratops_gif_data.cpp`) and rendered using LVGL's `lv_gif` widget.
 - **Dynamic Mask Reveal Engine**: As the dinosaur walks across the display for 2000 ms, a masking rectangle coordinates with its $X$ position to smoothly reveal the title header text: **"TOUCH GATEWAY ESP32 S3"**.
 - **Vector Background Accents**: Procedural memory chip icons (`create_splash_memory_icon`) render silicon dies, pins, and memory cell patterns directly onto the canvas.
 
+---
+
 ### 2. Main HMI Dashboard
+
+<p align="center">
+  <img src="docs/images/lvgl_dashboard.png" width="380" alt="Screen 2: Main HMI Touch Dashboard" />
+</p>
+
 - **STM32 Status LED**: Glowing green indicator confirming live UART link health with the STM32.
 - **Servo Arc Controller**: Touch-controlled arc adjusting angles between $0^\circ$ and $180^\circ$.
 - **Motor Control Suite**: Distinct ON (Green), OFF (Red), and STOP (Amber) buttons linked to hardware speed memory.
 - **Telemetry Visualizers**: Real-time numerical display for DS18B20 temperature and an animated progress bar for ultrasonic distance.
 
+---
+
 ### 3. QR Connectivity Screen & Local Network Access
+
+<p align="center">
+  <img src="docs/images/lvgl_qr_screen.png" width="380" alt="Screen 3: QR Connectivity Screen" />
+</p>
+
 - **On-the-Fly QR Generation**: Built using `lv_qrcode` to directly display the local IP assigned via DHCP (`http://<ESP32_IP>`).
 - **Local Subnet (LAN) Security**:
   > 🔒 **Notice**: The HTTP & WebSocket server is hosted on local Port 80. Client smartphones and PCs **must be connected to the exact same Wi-Fi SSID** to open the web dashboard.
