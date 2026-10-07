@@ -113,8 +113,8 @@ uint32_t g_last_touch_log_ms = 0;
 AsyncWebServer server(80);
 AsyncWebSocket ws("/ws");
 
-const char *ssid_wifi = "Totalplay-2.4G-a728";
-const char *pass_wifi = "FamP3rezSus4n4001.";
+const char *ssid_wifi = "---------";
+const char *pass_wifi = "---------";
 
 // ==========================================
 // 4. BUFFERS Y OBJETOS LVGL
