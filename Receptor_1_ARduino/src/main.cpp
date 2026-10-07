@@ -1,3 +1,12 @@
+/**
+ * ============================================================================
+ * Proyecto : Estacion de Control HMI y Telemetria IoT
+ * Archivo  : main.cpp (ESP32-S3 Firmware)
+ * Descrip. : Gateway IoT, Servidor Web Asincrono y Panel Tactil LVGL 8.3
+ * Author   : DanyGhostt
+ * ============================================================================
+ */
+
 #include <Arduino.h>
 #include <SPI.h>
 #include <Adafruit_GFX.h>
@@ -11,43 +20,43 @@
 #include "triceratops_gif.h"
 #include "web_ui.h"
 
-// FreeRTOS
+// FreeRTOS Kernel
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/queue.h"
 #include "freertos/semphr.h"
 
-// ==========================================
-// 1. PINES DE HARDWARE
-// ==========================================
-// Enlace UART hacia STM32
-#define RXD1 18 // STM32 TX -> ESP32 RX
-#define TXD1 17 // STM32 RX -> ESP32 TX
+// ============================================================================
+// 1. DEFINICION DE PINES DE HARDWARE / HARDWARE PIN DEFINITIONS
+// ============================================================================
+// Enlace Serie UART hacia STM32 / UART Link to STM32
+#define RXD1 18 // STM32 TX (PB10) -> ESP32 RX
+#define TXD1 17 // STM32 RX (PC5)  -> ESP32 TX
 
-// Bus SPI Principal Compartido
+// Bus SPI Principal Compartido / Shared Hardware SPI Bus
 #define SPI_SCLK_PIN    6
 #define SPI_MOSI_PIN    7
-#define SPI_MISO_PIN    1   // T_DO del panel táctil
+#define SPI_MISO_PIN    1   // T_DO del panel táctil / Touch MISO
 
-// Pantalla TFT (ILI9341)
+// Pantalla TFT ILI9341 (320x240) / ILI9341 TFT Display
 #define TFT_CS_PIN     10
 #define TFT_DC_PIN      9
 #define TFT_RST_PIN    14
 
-// Panel Táctil Resistivo (XPT2046)
+// Panel Táctil Resistivo XPT2046 / XPT2046 Resistive Touch Controller
 #define TOUCH_CS_PIN    2   // T_CS
 #define TOUCH_IRQ_PIN   3   // T_IRQ
 
-// Calibración exacta obtenida de tus lecturas físicas directas
+// Calibración del panel táctil (lectura directa) / Touchscreen ADC Calibration
 #define TS_RAW_MIN_X   370
 #define TS_RAW_MAX_X  3720
 #define TS_RAW_MIN_Y   410
 #define TS_RAW_MAX_Y  3730
 #define TOUCH_PRESSURE_THRESHOLD 200
 
-// ==========================================
-// 2. PROTOCOLO CON LA STM32 (6 BYTES)
-// ==========================================
+// ============================================================================
+// 2. PROTOCOLO CON LA STM32 (6 BYTES) / STM32 UART BINARY PROTOCOL
+// ============================================================================
 #define CMD_MOTOR_DC       0x01
 #define CMD_ULTRASONIC     0x02
 #define CMD_SERVO          0x03
@@ -61,13 +70,14 @@ enum ControlKind : uint8_t {
     CONTROL_SERVO
 };
 
+// Trama binaria estructurada de 6 bytes / 6-Byte Packed Binary Interaction Frame
 typedef struct __attribute__((packed)) {
-    uint8_t startMarker;   // 0xAA
-    uint8_t commandCode;
-    uint8_t payloadLength; // 0x01
-    uint8_t actionData;
-    uint8_t checksum;
-    uint8_t endMarker;     // 0x55
+    uint8_t startMarker;   // Inicio de trama / Start delimiter: 0xAA
+    uint8_t commandCode;   // Identificador de accion / Command ID
+    uint8_t payloadLength; // Longitud del dato / Payload length: 0x01
+    uint8_t actionData;    // Parametro o telemetria / Parameter or telemetry data
+    uint8_t checksum;      // Suma de validacion / Checksum: (CMD + LEN + DATA) & 0xFF
+    uint8_t endMarker;     // Fin de trama / End delimiter: 0x55
 } RemoteInteractionFrame_t;
 
 typedef struct {
@@ -76,9 +86,9 @@ typedef struct {
     uint8_t kind;
 } QueuedCommand_t;
 
-// ==========================================
-// 3. OBJETOS DEL SISTEMA Y RED
-// ==========================================
+// ============================================================================
+// 3. OBJETOS DEL SISTEMA Y RED / SYSTEM & NETWORK OBJECTS
+// ================================================================================
 HardwareSerial STM32_Serial(1);
 
 Adafruit_ILI9341 tft = Adafruit_ILI9341(&SPI, TFT_DC_PIN, TFT_CS_PIN, TFT_RST_PIN);
@@ -705,9 +715,10 @@ void Process_Incoming_STM32_Data() {
     }
 }
 
-// =================================================================
-// TAREA 1 (CORE 1): MOTOR GRÁFICO LVGL & ENTRADA TÁCTIL
-// =================================================================
+// ============================================================================
+// TAREA 1 (CORE 1): MOTOR GRAFICO LVGL & DIGITALIZADOR TACTIL
+// TASK 1 (CORE 1): LVGL 8.3 GRAPHICS ENGINE & TOUCH DIGITIZER (66 FPS)
+// ============================================================================
 void vGuiTask(void *pvParameters) {
     TickType_t xLastWakeTime = xTaskGetTickCount();
     uint32_t last_lv_tick_ms = millis();
@@ -780,9 +791,10 @@ void vGuiTask(void *pvParameters) {
     }
 }
 
-// =================================================================
-// TAREA 2 (CORE 0): CONTROL DETERMINISTA Y TELEMETRÍA UART STM32
-// =================================================================
+// ============================================================================
+// TAREA 2 (CORE 0): CONTROL DETERMINISTA Y TELEMETRIA UART STM32
+// TASK 2 (CORE 0): DETERMINISTIC UART DISPATCH & SENSOR TELEMETRY
+// ============================================================================
 void vControlTask(void *pvParameters) {
     QueuedCommand_t cmd;
     TickType_t xLastWakeTime = xTaskGetTickCount();

@@ -2,7 +2,9 @@
 /**
   ******************************************************************************
   * @file           : main.c
-  * @brief          : Main program body
+  * @brief          : Firmware STM32F446RE - Estacion de Control HMI y Telemetria IoT
+  *                   STM32F446RE Firmware - Real-Time Deterministic Control & Telemetry
+  * @author         : DanyGhostt
   ******************************************************************************
   */
 /* USER CODE END Header */
@@ -19,13 +21,14 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+// Identificadores de Comando / Command Identifiers
 #define CMD_MOTOR_DC       0x01
 #define CMD_ULTRASONIC     0x02
 #define CMD_SERVO          0x03
 #define CMD_TEMP           0x04
 #define CMD_EMERGENCY      0xEE
 
-//Driver TB6612FNG
+// Modos de Motor DC TB6612FNG / TB6612FNG DC Motor Operation Modes
 #define MOTOR_STOP         0x00
 #define MOTOR_CW_MAX       0x01
 #define MOTOR_CW_MIN       0x02
@@ -33,13 +36,14 @@
 #define MOTOR_CCW_MIN      0x04
 #define MOTOR_BRAKE        0x05
 
+// Trama binaria estructurada de 6 bytes / 6-Byte Packed Binary Interaction Frame
 typedef struct __attribute__((packed)) {
-    uint8_t startMarker;   // 0xAA
-    uint8_t commandCode;   // Identificador de acción
-    uint8_t payloadLength; // 0x01
-    uint8_t actionData;    // Parámetro (ángulo, velocidad, etc.)
-    uint8_t checksum;      // Validación matemática
-    uint8_t endMarker;     // 0x55
+    uint8_t startMarker;   // Inicio de trama / Start delimiter: 0xAA
+    uint8_t commandCode;   // Identificador de accion / Command ID
+    uint8_t payloadLength; // Longitud del dato / Payload length: 0x01
+    uint8_t actionData;    // Parametro o telemetria / Parameter or telemetry data
+    uint8_t checksum;      // Suma de validacion / Checksum: (CMD + LEN + DATA) & 0xFF
+    uint8_t endMarker;     // Fin de trama / End delimiter: 0x55
 } RemoteInteractionFrame_t;
 
 
