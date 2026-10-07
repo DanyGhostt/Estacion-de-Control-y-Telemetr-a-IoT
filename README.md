@@ -27,35 +27,34 @@
 
 ## 📸 Galería del Proyecto / Project Showcase
 
-<!-- ================================================================= -->
-<!-- ESPACIO PARA FOTOS / IMAGE PLACEHOLDERS -->
-<!-- Coloca tus archivos de imagen en la carpeta docs/images/ -->
-<!-- ================================================================= -->
-
 ### 🔬 1. Ensamble Físico Completo / Full Physical Setup
-> **Fotografía del banco de pruebas, microcontroladores interconectados, puente H y sensores.**
-
-```markdown
-![Ensamble General del Proyecto](docs/images/proyecto_completo.jpg)
-```
+<p align="center">
+  <img src="docs/images/proyecto_completo.jpg" width="480" alt="Ensamble General del Proyecto" />
+  <br>
+  <em>Banco de pruebas integrado: STM32 Nucleo-F446RE, ESP32-S3 DevKit, Display TFT ILI9341, Driver TB6612FNG, Motorreductor DC, Servomotor SG90 y Sensores.</em>
+</p>
 
 ---
 
 ### 📱 2. Aplicación Web Responsive (Control Local IoT) / Web Dashboard
-> **Captura de la interfaz web en navegador móvil/escritorio.**
-
-```markdown
-![Interfaz Web de Control](docs/images/web_app_dashboard.png)
-```
+<p align="center">
+  <img src="docs/images/web_app_dashboard.png" width="300" alt="Interfaz Web de Control IoT" />
+  <br>
+  <em>Dashboard web servido en red local con controles de motor (ON/OFF/STOP), sliders de velocidad/servo y visor de telemetría en tiempo real.</em>
+</p>
 
 ---
 
-### 🖥️ 3. Pantallas LVGL (Display TFT ILI9341 320x240) / LVGL HMI Touch Screens
+### 🖥️ 3. Interfaces Gráficas LVGL (Display TFT ILI9341 320x240) / LVGL Touch Screens
 
-| 🦖 1. Splash Screen (Triceratops) | 🎛️ 2. Dashboard HMI Principal | 📲 3. Pantalla QR de Conectividad |
-| :---: | :---: | :---: |
-| ```![Splash Triceratops](docs/images/lvgl_splash_screen.png)``` | ```![Dashboard HMI](docs/images/lvgl_dashboard.png)``` | ```![Pantalla QR](docs/images/lvgl_qr_screen.png)``` |
-| Animación de entrada con revelado | Control de actuadores y telemetría | Acceso a Web App vía red local Wi-Fi |
+<div align="center">
+
+| 🦖 1. Splash Screen (Portada con Triceratops) | 🎛️ 2. Dashboard HMI Táctil Principal |
+| :---: | :---: |
+| <img src="docs/images/lvgl_splash_screen.png" width="320" alt="Splash Screen Triceratops" /> | <img src="docs/images/lvgl_dashboard.png" width="320" alt="Dashboard HMI Principal" /> |
+| *Animación de entrada con revelado dinámico* | *Control táctil interactivo y monitoreo de telemetría* |
+
+</div>
 
 ---
 
